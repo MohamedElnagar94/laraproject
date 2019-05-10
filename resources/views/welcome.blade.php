@@ -95,5 +95,11 @@
                 </div>
             </div>
         </div>
+        <form action="" method="post">
+            {{-- {{ csrf_token() }} --}}
+            {{-- <input type="hidden" name="token" value="{{ csrf_token() }}" id=""> --}}
+            <input type="text" name="username" id="">
+            <input type="submit" name="submit" id="">
+        </form>
     </body>
 </html>
