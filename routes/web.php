@@ -41,6 +41,12 @@ Route::post('test/1', function (Illuminate\Http\Request $request) {
 route::get('profile','test@index');
 route::get('profile','test@store');
 
+// Route::get('students', function () {
+//     return view('layouts.students');
+// });
+// route::get('students/all','StudentController@index');
+route::get('students','StudentController@store');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
