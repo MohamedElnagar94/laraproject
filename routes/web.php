@@ -20,18 +20,26 @@ Route::get('username/{username?}', function ($username=null) {
     return 'your name is '. $username;
 });
 
-Route::get('test', function () {
-    return '
-    <form action="" method="POST">
-        <input type="hidden" name="_token" value="'.csrf_token().'" id="">
-        <input type="text" name="username" id="">
-        <input type="submit" name="submit" id="">
-    </form>
-    ';
-});
-Route::post('test', function () {
-    return 'you are in test post '. request('username');
-});
+// Route::get('test', function () {
+//     return '
+//     <form action="" method="POST">
+//         <input type="hidden" name="_token" value="'.csrf_token().'" id="">
+//         <input type="text" name="username" id="">
+//         <input type="submit" name="submit" id="">
+//     </form>
+//     ';
+// });
+// Route::post('test', function () {
+//     return 'you are in test post '. request('username');
+// });
+
+Route::post('test/1', function (Illuminate\Http\Request $request) {
+        return $request->all();
+    });
+
+
+route::get('profile','test@index');
+route::get('profile','test@store');
 
 Auth::routes();
 

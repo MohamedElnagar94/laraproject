@@ -81,9 +81,18 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    YOU ARE IN PROFILE FILE
+                    {{-- {{$action}}-{{$action2}} --}}
+                    {{-- {{print_r($key1['action'])}}-{{$key2}} --}}
+                    {{$key1['action']}}-{{$key2}}
                 </div>
-
+                
+                <form action="{{ url('test/1') }}" method="POST">
+                    {{ csrf_field() }}
+                    {{-- <input type="hidden" name="_token" value="'.csrf_token().'" id=""> --}}
+                    <input type="text" name="username" id="">
+                    <input type="submit" name="submit" id="">
+                </form>
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
