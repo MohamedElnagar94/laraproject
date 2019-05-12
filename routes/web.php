@@ -44,7 +44,7 @@ route::get('profile','test@store');
 // Route::get('students', function () {
 //     return view('layouts.students');
 // });
-// route::get('students/all','StudentController@index');
+route::post('students/insert','StudentController@addstudent');
 route::get('students','StudentController@store');
 
 Auth::routes();

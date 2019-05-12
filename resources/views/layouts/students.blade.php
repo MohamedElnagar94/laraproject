@@ -48,7 +48,34 @@
                         @endforeach
                     </tbody>
                 </table>
-                {!! $students->render() !!}
+                {{-- {!! $students->render() !!} --}}
+            </div>
+        </div>
+    </section>
+    <section class="container-fluid">
+        <div class="container">
+            <div class="row">
+                {{ Form::open(['url' => 'students/insert','class' => 'w-100','method' => 'POST']) }}
+                    {{Form::text('username', '', ['class' => 'form-control col-md-4 float-left','placeholder' => 'Enter your username'])}}
+                    {{Form::email('email', '', ['class' => 'form-control col-md-4 float-left','placeholder' => 'Enter your email'])}}
+                    {{Form::password('password', ['class' => 'form-control col-md-4 float-left','placeholder' => 'Enter your password'])}}
+                    {{Form::number('age', '', ['class' => 'form-control col-md-4 float-left','placeholder' => 'Enter your age'])}}
+                    {{Form::number('phone', '', ['class' => 'form-control col-md-4 float-left','placeholder' => 'Enter your phonenumber'])}}
+                    {{Form::select('gender', ['0' => 'choose','1' => 'female', '2' => 'male'],null,['class' => 'form-control col-md-4 float-left'])}}
+                    {{Form::submit('submit',['class' => 'btn btn-primary col-md-4 float-left'])}}
+                    {{-- {{Form::date('name', \Carbon\Carbon::now(), ['class' => 'form-control'])}} --}}
+                    {{-- {{Form::file('image', ['class' => 'form-control'])}} --}}
+                    {{-- {{Form::select('size', ['L' => 'Large', 'S' => 'Small'], 'S')}} --}}
+                    {{-- {{Form::select('size', ['L' => 'Large', 'S' => 'Small'], null, ['placeholder' => 'Pick a size...'])}} --}}
+                    {{-- {{Form::select('animal',[
+                        'Cats' => ['leopard' => 'Leopard'],
+                        'Dogs' => ['spaniel' => 'Spaniel'],
+                    ])}} --}}
+                    {{-- {{Form::selectRange('number', 10, 20)}} --}}
+                    {{-- {{Form::selectMonth('month')}} --}}
+                    {{-- {{link_to('mohamed', $title = null, $attributes = [], $secure = null)}} --}}
+                    {{-- {{link_to_asset('foo/bar.zip', $title = null, $attributes = [], $secure = null)}} --}}
+                {{ Form::close() }}
             </div>
         </div>
     </section>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class StudentController extends Controller
 {
@@ -15,6 +16,32 @@ class StudentController extends Controller
     public function index()
     {
         return view('layouts.students');
+    }
+
+    public function addstudent(Request $request)
+    {
+        // create
+        // firstorcreate
+        // firstornew
+        // updateorcreate
+        student::create([
+            'studentname'     =>  $request['username'],
+            'studentpassword' =>  $request['password'],
+            'studentemail'    =>  $request['email'],
+            'studentphone'    =>  $request['phone'],
+            'studentage'      =>  $request['age'],
+            'gender'          =>  $request['gender'],
+        ]);
+        // $add = new student;
+        // $add->studentname = request('username');
+        // $add->studentpassword = request('password');
+        // $add->studentemail = request('email');
+        // $add->studentphone = request('phone');
+        // $add->studentage = request('age');
+        // $add->gender = request('gender');
+        // $add->save();
+        return back();
+        // return Redirect('students');
     }
 
     /**
@@ -35,9 +62,9 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        // $students = student::all();
+        $students = student::all();
         // $students = student::paginate(5);
-        $students = student::orderby('studentage')->paginate(5);
+        // $students = student::orderby('studentage')->paginate(5);
         // $students = student::get(['studentname','gender','studentphone','studentage','studentemail']);
         // return dd($students);
         // return view('layouts.students',['students'=>$students]);
