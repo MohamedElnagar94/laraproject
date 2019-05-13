@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Router::pattern('id', '[0-9]+');
+$router->pattern('id', '[0-9]+');
 Route::get('/', function () {
     return view('welcome');
 });
@@ -45,8 +46,16 @@ route::get('profile','test@store');
 //     return view('layouts.students');
 // });
 route::post('students/insert','StudentController@addstudent');
+route::post('students/delete/{id}','StudentController@delete');
+// route::post('students/delete/all/{id?}','StudentController@deleteall');
+Route::post('students/delete/all/{id?}', 'StudentController@deleteall');
+// Route::put('students/delete/all/{id}', 'StudentController@deleteall');
+
+// Route::post('students/delete/all', ['as' => 'login', 'uses' => 'LoginController@getLogin']);
+
 route::get('students','StudentController@store');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+// Route::post('students/delete/all', 'StudentController@destroy')->name('id[]');

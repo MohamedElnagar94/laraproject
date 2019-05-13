@@ -21,6 +21,7 @@ class CreateStudentsTable extends Migration
             $table->string('studentphone',100);
             $table->integer('studentage');
             $table->enum('gender',['1','2']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

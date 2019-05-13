@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use DB;
 
 class StudentController extends Controller
 {
@@ -16,6 +17,40 @@ class StudentController extends Controller
     public function index()
     {
         return view('layouts.students');
+    }
+
+    public function delete($id)
+    {
+        $delete = student::find($id);
+        $delete->delete();
+        return back();
+    }
+    public function deleteall($id=null)
+    {
+        return request('id');
+        // $myCheckboxes = $request->input('id');
+        // dd($myCheckboxes);
+        // dd($request->all());
+        // $ids =  request('id');
+        // $ids = $request->ids;
+        // dd($ids);
+        // DB::table("students")->whereIn('id',explode(",",$ids))->delete();
+        // return response()->json(['success'=>"Products Deleted successfully."]);
+        // return request('id');
+        // if (!$id = null) {
+            // $delete = student::find($id);
+            // $delete->delete();
+        // } else if(request()->has('id')){
+            // student::destroy(request('id'));
+        // }
+        // for($ii = 0; $ii < count($request->id);$ii++){
+        //     $student_id_array = $request->id[$ii];
+        //     dd($student_id_array);
+        // }
+        
+        // $student = student::whereIn('id', $student_id_array);
+        
+        // return back();
     }
 
     public function addstudent(Request $request)
@@ -64,7 +99,7 @@ class StudentController extends Controller
     {
         $students = student::all();
         // $students = student::paginate(5);
-        // $students = student::orderby('studentage')->paginate(5);
+        $students = student::orderby('id')->get(['studentname','gender','studentphone','studentage','studentemail']);
         // $students = student::get(['studentname','gender','studentphone','studentage','studentemail']);
         // return dd($students);
         // return view('layouts.students',['students'=>$students]);
@@ -113,6 +148,24 @@ class StudentController extends Controller
      */
     public function destroy(student $student)
     {
-        //
+        // $myCheckboxes = $student->input('id');
+        // dd($myCheckboxes);
+        // dd($student->all());
+        // $ids_to_delete = array_map(function($item){ return $item['id']; }, $users_to_delete);
+        // DB::table('students')->whereIn('id', $ids_to_delete)->delete(); 
+
+        
+        // $delete = student::find($student);
+        $delete = student::find($student);
+        dd($delete);
+        // student::destroy(request('id'));
+        // $student_id_array = $student->input('id');
+        // dd($student_id_array);
+        // $student = student::whereIn('id', $delete);
+        // student::find($student)->delete();
+        // $ids = $student->ids;
+        // dd($ids);
+        // DB::table("students")->whereIn('id',explode(",",$ids))->delete();
+        // return back();
     }
 }
