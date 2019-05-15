@@ -46,9 +46,10 @@ route::get('profile','test@store');
 //     return view('layouts.students');
 // });
 route::post('students/insert','StudentController@addstudent');
-route::post('students/delete/{id}','StudentController@delete');
+route::post('students/delete/{id?}','StudentController@delete');
 // route::post('students/delete/all/{id?}','StudentController@deleteall');
 Route::post('students/delete/all/{id?}', 'StudentController@deleteall');
+Route::post('students/recycle/{id?}', 'StudentController@recycle');
 // Route::put('students/delete/all/{id}', 'StudentController@deleteall');
 
 // Route::post('students/delete/all', ['as' => 'login', 'uses' => 'LoginController@getLogin']);

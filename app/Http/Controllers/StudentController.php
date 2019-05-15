@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\student;
+// use App\Http\Controllers\Validat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Validator;
 use DB;
 
 class StudentController extends Controller
@@ -19,10 +21,23 @@ class StudentController extends Controller
         return view('layouts.students');
     }
 
-    public function delete($id)
+    public static function delete($id=null)
     {
-        $delete = student::find($id);
-        $delete->delete();
+        // return request('id');
+
+        if(request()->has('harddelete')){
+            // student::whereIn('id',request('id'))->forceDelete();
+            // DB::table("students")->whereIn('id',request('id'))->forceDelete();
+            $delete = student::find($id);
+            $delete->forceDelete();
+            // student::forceDelete(request('id'));
+
+        }else if(request()->has('recycle')){
+            student::destroy(request('id'));
+
+        }
+        // $delete = student::find($id);
+        // $delete->delete();
         return back();
     }
     public function deleteall($id=null)
@@ -52,13 +67,54 @@ class StudentController extends Controller
         
         // return back();
     }
+    public function recycle($id=null)
+    {
+        // return request('id');
+
+        // $delete = student::find($id);
+        // dd(delete);
+        if (request()->has('recycle') && request()->has('id')) {
+            // DB::table("students")->whereIn('id',request('id'))->restore();
+            student::whereIn('id',request('id'))->restore();
+        } else if(request()->has('harddelete') && request()->has('id')){
+            student::whereIn('id',request('id'))->forceDelete();
+        }
+        return back();
+    }
 
     public function addstudent(Request $request)
     {
+        // return $validator->errors()->all();
         // create
         // firstorcreate
         // firstornew
         // updateorcreate
+        // dd($request->all());
+        // $validatedData = $request->validate([
+        //     'studentname'       => 'required',
+        //     'studentpassword'   => 'required',
+        //     'studentemail'      => 'required',
+        //     'studentphone'      => 'required',
+        //     'studentage'        => 'required',
+        //     'gender'            => 'required',
+        // ]);
+        $data = $this->validate($request,[
+            'username'       => 'required',
+            'email'   => 'required',
+            'password'      => 'required',
+            'phone'      => 'required',
+            'age'        => 'required',
+            'gender'            => 'required',
+        ]);
+        // $data = $this->validate(request(),[
+        //     'studentname'       => 'required',
+        //     'studentpassword'   => 'required',
+        //     'studentemail'      => 'required',
+        //     'studentphone'      => 'required',
+        //     'studentage'        => 'required',
+        //     'gender'            => 'required',
+        // ]);
+        // student::create($data);
         student::create([
             'studentname'     =>  $request['username'],
             'studentpassword' =>  $request['password'],
@@ -97,13 +153,15 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $students = student::all();
+        // $students = student::all();
+        $students = student::withTrashed()->get();
+        $recycle = student::onlyTrashed()->get();
         // $students = student::paginate(5);
-        $students = student::orderby('id')->get(['studentname','gender','studentphone','studentage','studentemail']);
+        // $students = student::orderby('id')->get(['studentname','gender','studentphone','studentage','studentemail']);
         // $students = student::get(['studentname','gender','studentphone','studentage','studentemail']);
         // return dd($students);
         // return view('layouts.students',['students'=>$students]);
-        return view('layouts.students',compact('students'));
+        return view('layouts.students',compact('students','recycle'));
     }
 
     /**

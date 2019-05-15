@@ -1,0 +1,5 @@
+.tablewarning,
+.tablewarning > th,
+.tablewarning > td {
+  background-color: #ffeeba;
+}

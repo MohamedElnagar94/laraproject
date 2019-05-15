@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/main.css">
     <title>Document</title>
 </head>
 <body>
@@ -25,173 +26,71 @@
                 </button>
                 
                 <!-- Modal -->
+                {{ Form::open(['url' => 'students/recycle','class' => 'w-100','method' => 'POST']) }}
                 <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 1080px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col" class="d-flex align-items-center">Student Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Phone</th>
+                                            <th scope="col">Age</th>
+                                            <th scope="col">Gender</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <span style="display:none">{{$count=1}}</span>
+                                        @foreach ($recycle as $trashed)
+                                            
+                                        
+                                        <tr>
+                                            <th scope="row">{{$count++}}</th>
+                                            <td>{{ $trashed->studentname}}</td>
+                                            <td>{{ $trashed->studentemail }}</td>
+                                            <td>{{ $trashed->studentphone }}</td>
+                                            <td>{{ $trashed->studentage }}</td>
+                                            <td>
+                                                @if (isset($trashed->gender)) 
+                                                    @if ($trashed->gender==2) 
+                                                        {{'male'}}
+                                                    @else 
+                                                        {{'female'}}
+                                                    @endif
+                                                @endif
+                                                @if (!isset($trashed->gender)) 
+                                                    {{null}}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{Form::checkbox('id[]', $trashed->id,false,['class' => 'checked'])}}  
+                                                {{-- <input id="check_all" type="checkbox" v-on:click="action"/> --}}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" name="recycle" class="btn btn-warning">Recycle</button>
+                                <button type="submit" name="harddelete" class="btn btn-danger">Delete</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col" class="d-flex align-items-center">Student Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Phone</th>
-                                        <th scope="col">Age</th>
-                                        <th scope="col">Gender</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>
-                                            <input id="check_all" type="checkbox" v-model="checkedall" v-on:click="action" class="mr-3"/>
-                                        </td>
-                                    </tr>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
                     </div>
                 </div>
-                        
+                {{ Form::close() }}                       
                         <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -203,13 +102,23 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $error)
+                                    <div class="alert alert-danger mt-2">
+                                        <ul class="list-unstyled p-0">
+                                            <li>{{ $error }}</li>
+                                        </ul>
+                                    </div>
+                                @endforeach
+                            @endif
+                            
                             {{ Form::open(['url' => 'students/insert','class' => 'w-100','method' => 'POST']) }}
-                                {{Form::text('username', '', ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your username'])}}
-                                {{Form::email('email', '', ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your email'])}}
+                                {{Form::text('username', old('username'), ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your username'])}}
+                                {{Form::email('email', old('email'), ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your email'])}}
                                 {{Form::password('password', ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your password'])}}
-                                {{Form::number('age', '', ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your age'])}}
-                                {{Form::number('phone', '', ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your phonenumber'])}}
-                                {{Form::select('gender', ['' => 'choose','1' => 'female', '2' => 'male'],null,['class' => 'form-control col-md-12 float-left mt-3'])}}
+                                {{Form::number('age', old('age'), ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your age'])}}
+                                {{Form::number('phone', old('phone'), ['class' => 'form-control col-md-12 float-left mt-3','placeholder' => 'Enter your phonenumber'])}}
+                                {{Form::select('gender', ['' => 'choose','1' => 'female', '2' => 'male'],old('gender') == '1'?'selected':'',['class' => 'form-control col-md-12 float-left mt-3'])}}
                                 <div class="modal-footer float-right">
                                     <button type="button" class="btn btn-secondary float-right mt-3 mr-3 box" data-dismiss="modal">Close</button>
                                     {{Form::submit('Save',['class' => 'btn btn-primary mt-3 float-right'])}}
@@ -253,13 +162,14 @@
                             <th scope="col">Phone</th>
                             <th scope="col">Age</th>
                             <th scope="col">Gender</th>
+                            <th scope="col">Delete Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <span style="display:none">{{$count=1}}</span>
                         @foreach ($students as $array)
-                        <tr>
+                        <tr class={{$array->deleted_at != null? 'bg-warning':''}}>
                             <th scope="row">{{$count++}}</th>
                             <td>
                                     {{ Form::open(['url' => 'students/delete/all','class' => 'w-100','method' => 'POST']) }}
@@ -308,6 +218,10 @@
                                     {{null}}
                                 @endif
                             </td>
+
+                            <td class="status" v-show="{{$array->deleted_at == null}}">Active</td>
+                            <td class="statustrashed" v-show="{{$array->deleted_at != null}}">Trashed</td>
+
                             <td class="d-flex justify-content-center align-items-center">
                                 <a href="" class="mr-3" style="color:skyblue" data-toggle="modal" data-target="#exampleModaledit{{$array->id}}"><i class="far fa-edit"></i></a>
                                 <a href="" class="" style="color:red" data-toggle="modal" data-target="#exampleModaldelete{{$array->id}}"><i class="far fa-trash-alt"></i></a>
@@ -354,7 +268,8 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             {{ Form::open(['url' => 'students/delete/'.$array->id,'class' => 'w-100','method' => 'POST']) }}
-                                                {{Form::submit('Save changes',['class' => 'btn btn-danger mt-3 float-right'])}}
+                                                {{Form::submit('Delete To Recycle',['class' => 'btn btn-warning mt-3 ml-3 float-right statusall','name'=>'recycle'])}}
+                                                {{Form::submit('Delete',['class' => 'btn btn-danger mt-3 float-right','name'=>'harddelete'])}}
                                             {{ Form::close() }}
                                         </div>
                                         </div>
@@ -396,24 +311,70 @@
                 {{-- v-on:click="checkedall=false" type="checkbox" :checked="checkbox==true --}}
             </div>
         </div>
+        {{-- @if ($array->deleted_at == null)
+                    {{ 'Active' }}
+                @else
+                    {{ 'Trashed' }}
+                @endif --}}
     </section>
     <script src="/js/app.js"></script>
     {{-- <script src="/js/main.js"></script> --}}
     <script>
         $(document).ready(function(){
+            // $(".statustrashed").addClass('bg-warning')
+            // $(".status").addClass('bg-success')
+            // if ($(".statustrashed").css()) {
+            //     $(this).parent().addClass('tablewarning')
+            // } else {
+                
+            // }
+            // $(".status").html('Trashed').addClass('tablewarning')
             $(".checked").click(function(){
                 // var x = $(this).data('val');
                 var x = $(this).val();
                 console.log(x);
-                
             })
+            // $(".statusall").click(function(){
+            //     var x = $(this).parent().parent().parent().parent().find('.status').html()
+
+            //     if (x = 'Trashed') {
+            //         $(x).parent().addClass('tablewarning');
+            //     } else {
+                    
+            //     }
+            // })
+            // if ($(".status").html() == 'Trashed') {
+            //     $(this).parent().addClass('tablewarning')
+                
+            // } else {
+                
+            // }
+           
+        })
+        Vue.component('status-student', {
+            template:
+            `<div>
+                <td class="status" v-show="{{$array->deleted_at == null}}">Active</td>
+                <td class="status" v-show="{{$array->deleted_at != null}}">Trashed</td>
+             </div>   
+            `,
+            // data:function() {
+            //     return {
+            //         trashed:false,
+            //         active:true, 
+            //     }
+            // },
+
         })
         new Vue({
             el:'.student',
             data:{
                 checkedall:false,
                 checkbox:false,
+                trashed:'Trashed',
+                active:'Active',
                 // key:'',
+                status:false,
                 check:[],
                 
                 value:[]
