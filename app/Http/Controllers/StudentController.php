@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Validator;
 use DB;
+use Session;
 
 class StudentController extends Controller
 {
@@ -30,11 +31,12 @@ class StudentController extends Controller
             // DB::table("students")->whereIn('id',request('id'))->forceDelete();
             $delete = student::find($id);
             $delete->forceDelete();
+            session::flash('delete', 'mohamed');
             // student::forceDelete(request('id'));
 
         }else if(request()->has('recycle')){
             student::destroy(request('id'));
-
+            session::flash('recycle', 'mohamed');
         }
         // $delete = student::find($id);
         // $delete->delete();
@@ -78,6 +80,8 @@ class StudentController extends Controller
             student::whereIn('id',request('id'))->restore();
         } else if(request()->has('harddelete') && request()->has('id')){
             student::whereIn('id',request('id'))->forceDelete();
+            // session::flash('deletestudent', 'mohamed');
+
         }
         return back();
     }
@@ -99,12 +103,33 @@ class StudentController extends Controller
         //     'gender'            => 'required',
         // ]);
         $data = $this->validate($request,[
-            'username'       => 'required',
-            'email'   => 'required',
-            'password'      => 'required',
-            'phone'      => 'required',
-            'age'        => 'required',
-            'gender'            => 'required',
+            'username'      => 'required|max:100|min:4',
+            'email'         => 'required|email|unique:students,studentemail',
+            'password'      => 'required|min:8',
+            'phone'         => 'required|numeric',
+            'age'           => 'required|numeric',
+            'gender'        => 'required',
+        ],[
+            'username.required'      => 'The User Name is required you should enter your user name',
+            'username.max'      => 'The User Name must be less than 100 characters',
+            'username.min'      => 'The User Name must be more than 4 characters',
+            'email.required'         => 'The Email is required you should enter your Email',
+            'email.email'         => 'The Field Email must be Email for example: example@example.com',
+            'email.unique'         => 'The Email has already been taken',
+            'password.required'      => 'The Password is required you should enter your Password',
+            'password.min'      => 'The User Name must be more than 8 characters',
+            'phone.required'         => 'The Phone Number is required you should enter your Phone Number',
+            'phone.numeric'         => 'The Phone Number must be number',
+            'age.required'           => 'The Age is required you should enter your Age',
+            'age.numeric'         => 'The Age must be number',
+            'gender.required'        => 'The Gender is required you must choose one of options',
+        ],[
+            'username'      => 'User Name',
+            'email'         => 'Email',
+            'password'      => 'Password',
+            'phone'         => 'Phone Number',
+            'age'           => 'Age',
+            'gender'        => 'Gender',
         ]);
         // $data = $this->validate(request(),[
         //     'studentname'       => 'required',
@@ -123,6 +148,7 @@ class StudentController extends Controller
             'studentage'      =>  $request['age'],
             'gender'          =>  $request['gender'],
         ]);
+        session::flash('message', 'mohamed');
         // $add = new student;
         // $add->studentname = request('username');
         // $add->studentpassword = request('password');

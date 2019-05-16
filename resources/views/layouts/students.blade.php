@@ -52,8 +52,6 @@
                                     <tbody>
                                             <span style="display:none">{{$count=1}}</span>
                                         @foreach ($recycle as $trashed)
-                                            
-                                        
                                         <tr>
                                             <th scope="row">{{$count++}}</th>
                                             <td>{{ $trashed->studentname}}</td>
@@ -78,14 +76,13 @@
                                             </td>
                                         </tr>
                                         @endforeach
-                                        
                                     </tbody>
                                 </table>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" name="recycle" class="btn btn-warning">Recycle</button>
-                                <button type="submit" name="harddelete" class="btn btn-danger">Delete</button>
+                                <button type="submit" name="recycle" class="btn btn-warning backstudent">Recycle</button>
+                                <button type="submit" name="harddelete" class="btn btn-danger deletestudent">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -121,7 +118,7 @@
                                 {{Form::select('gender', ['' => 'choose','1' => 'female', '2' => 'male'],old('gender') == '1'?'selected':'',['class' => 'form-control col-md-12 float-left mt-3'])}}
                                 <div class="modal-footer float-right">
                                     <button type="button" class="btn btn-secondary float-right mt-3 mr-3 box" data-dismiss="modal">Close</button>
-                                    {{Form::submit('Save',['class' => 'btn btn-primary mt-3 float-right'])}}
+                                    {{Form::submit('Save',['class' => 'btn btn-primary mt-3 float-right submittt'])}}
                                 </div>
                             {{ Form::close() }}
                         </div>
@@ -224,7 +221,7 @@
 
                             <td class="d-flex justify-content-center align-items-center">
                                 <a href="" class="mr-3" style="color:skyblue" data-toggle="modal" data-target="#exampleModaledit{{$array->id}}"><i class="far fa-edit"></i></a>
-                                <a href="" class="" style="color:red" data-toggle="modal" data-target="#exampleModaldelete{{$array->id}}"><i class="far fa-trash-alt"></i></a>
+                                <a href="" v-show="{{$array->deleted_at == null}}" class="" style="color:red" data-toggle="modal" data-target="#exampleModaldelete{{$array->id}}"><i class="far fa-trash-alt"></i></a>
                                 <div class="modal fade" id="exampleModaledit{{$array->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -268,8 +265,8 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             {{ Form::open(['url' => 'students/delete/'.$array->id,'class' => 'w-100','method' => 'POST']) }}
-                                                {{Form::submit('Delete To Recycle',['class' => 'btn btn-warning mt-3 ml-3 float-right statusall','name'=>'recycle'])}}
-                                                {{Form::submit('Delete',['class' => 'btn btn-danger mt-3 float-right','name'=>'harddelete'])}}
+                                                {{Form::submit('Delete To Recycle',['class' => 'btn btn-warning mt-3 ml-3 float-right statusall recyclestudent','name'=>'recycle'])}}
+                                                {{Form::submit('Delete',['class' => 'btn btn-danger mt-3 float-right deletestudent','name'=>'harddelete'])}}
                                             {{ Form::close() }}
                                         </div>
                                         </div>
@@ -284,7 +281,7 @@
             </div>
         </div>
     </section>
-    <section class="container-fluid">
+        <section class="container-fluid">
         <div class="container">
             <div class="row">
                 {{-- {{ Form::open(['url' => 'students/insert','class' => 'w-100','method' => 'POST','v-on:submit.prevent']) }} --}}
@@ -311,60 +308,63 @@
                 {{-- v-on:click="checkedall=false" type="checkbox" :checked="checkbox==true --}}
             </div>
         </div>
-        {{-- @if ($array->deleted_at == null)
-                    {{ 'Active' }}
-                @else
-                    {{ 'Trashed' }}
-                @endif --}}
     </section>
+    
     <script src="/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     {{-- <script src="/js/main.js"></script> --}}
+    @if (session()->has('message'))
     <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        Toast.fire({
+            type: 'success',
+            title: 'Student created in successfully'
+        })
+    </script>
+    @endif
+    <script>
+        // setTimeout(function() { alert("my message"); }, 500);
+        // setTimeout(function() { alert( "moo" ); }, 7000 );
         $(document).ready(function(){
+            $('.deletestudent').click(function(){
+                Swal.fire({
+                    type: 'success',
+                    // title: 'Oops...',
+                    title: 'Deleted',
+                    text: 'The student deleted successfully',
+                    showConfirmButton: false,
+                    // footer: '<a href>Why do I have this issue?</a>'
+                })
+            })
+            $('.recyclestudent').click(function(){
+                Swal.fire({
+                    type: 'warning',
+                    // title: 'Oops...',
+                    title: 'The student deleted to recycle successfully',
+                    showConfirmButton: false,
+                    // footer: '<a href>Why do I have this issue?</a>'
+                })
+            })
+            $('.backstudent').click(function(){
+                Swal.fire({
+                    type: 'success',
+                    // title: 'Oops...',
+                    title: 'The student return back successfully',
+                    showConfirmButton: false,
+                    // footer: '<a href>Why do I have this issue?</a>'
+                })
+            })
             // $(".statustrashed").addClass('bg-warning')
             // $(".status").addClass('bg-success')
-            // if ($(".statustrashed").css()) {
-            //     $(this).parent().addClass('tablewarning')
-            // } else {
-                
-            // }
-            // $(".status").html('Trashed').addClass('tablewarning')
             $(".checked").click(function(){
-                // var x = $(this).data('val');
                 var x = $(this).val();
                 console.log(x);
             })
-            // $(".statusall").click(function(){
-            //     var x = $(this).parent().parent().parent().parent().find('.status').html()
-
-            //     if (x = 'Trashed') {
-            //         $(x).parent().addClass('tablewarning');
-            //     } else {
-                    
-            //     }
-            // })
-            // if ($(".status").html() == 'Trashed') {
-            //     $(this).parent().addClass('tablewarning')
-                
-            // } else {
-                
-            // }
-           
-        })
-        Vue.component('status-student', {
-            template:
-            `<div>
-                <td class="status" v-show="{{$array->deleted_at == null}}">Active</td>
-                <td class="status" v-show="{{$array->deleted_at != null}}">Trashed</td>
-             </div>   
-            `,
-            // data:function() {
-            //     return {
-            //         trashed:false,
-            //         active:true, 
-            //     }
-            // },
-
         })
         new Vue({
             el:'.student',
@@ -374,6 +374,7 @@
                 trashed:'Trashed',
                 active:'Active',
                 // key:'',
+                mohamed:'',
                 status:false,
                 check:[],
                 
@@ -401,5 +402,57 @@
             },
         })
     </script>
+    {{-- @if (session()->has('message'))
+    <div class="swal2-container swal2-top-end swal2-fade swal2-shown" style="overflow-y: auto;background:none;bottom:unset;left:unset">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-toast swal2-show" tabindex="-1" role="alert" aria-live="polite" style="display: flex;">
+            <div class="swal2-header">
+                <ul class="swal2-progress-steps" style="display: none;"></ul>
+            <div class="swal2-icon swal2-error" style="display: none;">
+                <span class="swal2-x-mark">
+                    <span class="swal2-x-mark-line-left"></span>
+                    <span class="swal2-x-mark-line-right"></span>
+                </span>
+            </div>
+            <div class="swal2-icon swal2-question" style="display: none;"></div>
+            <div class="swal2-icon swal2-warning" style="display: none;"></div>
+            <div class="swal2-icon swal2-info" style="display: none;"></div>
+            <div class="swal2-icon swal2-success swal2-animate-success-icon" style="display: flex;">
+                <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+                <span class="swal2-success-line-tip"></span>
+                <span class="swal2-success-line-long"></span>
+                <div class="swal2-success-ring"></div>
+                <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+                <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+            </div>
+            <img class="swal2-image" style="display: none;">
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Signed in successfully</h2>
+            <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
+        </div>
+        <div class="swal2-content">
+            <div id="swal2-content" style="display: none;"></div>
+            <input class="swal2-input" style="display: none;">
+            <input type="file" class="swal2-file" style="display: none;">
+            <div class="swal2-range" style="display: none;">
+                <input type="range">
+                <output></output>
+            </div>
+            <select class="swal2-select" style="display: none;"></select>
+            <div class="swal2-radio" style="display: none;"></div>
+            <label for="swal2-checkbox" class="swal2-checkbox" style="display: none;">
+                <input type="checkbox">
+                <span class="swal2-label">
+                    </span>
+                </label>
+                <textarea class="swal2-textarea" style="display: none;"></textarea>
+                <div class="swal2-validation-message" id="swal2-validation-message" style="display: none;"></div>
+            </div>
+            <div class="swal2-actions" style="display: none;">
+                <button type="button" class="swal2-confirm swal2-styled" aria-label="" style="display: none; border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214);">OK</button>
+                <button type="button" class="swal2-cancel swal2-styled" aria-label="" style="display: none;">Cancel</button>
+            </div>
+            <div class="swal2-footer" style="display: none;"></div>
+        </div>
+    </div>
+    @endif --}}
 </body>
 </html>
