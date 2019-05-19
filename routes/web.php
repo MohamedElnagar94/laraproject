@@ -16,6 +16,12 @@ $router->pattern('id', '[0-9]+');
 Route::get('/', function () {
     return view('welcome');
 });
+// Route::get('/register', function () {
+//     return view('auth.register');
+// });
+// Route::get('/login', function () {
+//     return view('auth.login');
+// });
 
 Route::get('username/{username?}', function ($username=null) {
     return 'your name is '. $username;
@@ -54,9 +60,17 @@ Route::post('students/recycle/{id?}', 'StudentController@recycle');
 
 // Route::post('students/delete/all', ['as' => 'login', 'uses' => 'LoginController@getLogin']);
 
+Route::group(['middleware' => 'students'], function () {
 route::get('students','StudentController@store');
+});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 // Route::post('students/delete/all', 'StudentController@destroy')->name('id[]');
+    
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('students/login','LoginController@index');
+    Route::post('students/login','LoginController@show');
+    
+});

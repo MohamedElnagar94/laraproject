@@ -15,11 +15,12 @@ class students extends Seeder
     {
         for ($i=0; $i < 15; $i++) { 
             $add = new student;
-            $add->studentname = Arr::random(['mohamed','ahmed','abdo','aya','sabry','asmaa','hanan','khaled']);
-            $add->studentpassword = rand(100,1000);
-            $add->studentemail = Arr::random(['mohamed@info.com','speedo2003r@gmail.com','ahmed@info.com','abdo@info.com','mohamedelnagar461@yahoo.com','mohamedelnagar132@yahoo.com','aya@info.com']);
-            $add->studentphone = rand(11090789,99999999);
-            $add->studentage = rand(20,40);
+            $add->username = Arr::random(['mohamed','ahmed','abdo','aya','sabry','asmaa','hanan','khaled']);
+            $add->user_id = 1;
+            $add->password = bcrypt(rand(100,1000));
+            $add->email = Arr::random(['mohamed@info.com','speedo2003r@gmail.com','ahmed@info.com','abdo@info.com','mohamedelnagar461@yahoo.com','mohamedelnagar132@yahoo.com','aya@info.com']);
+            $add->phone = rand(11090789,99999999);
+            $add->age = rand(20,40);
             $add->gender = rand(1,2);
             $add->save();
         }

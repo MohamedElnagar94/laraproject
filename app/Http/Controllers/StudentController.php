@@ -102,62 +102,69 @@ class StudentController extends Controller
         //     'studentage'        => 'required',
         //     'gender'            => 'required',
         // ]);
-        $data = $this->validate($request,[
-            'username'      => 'required|max:100|min:4',
-            'email'         => 'required|email|unique:students,studentemail',
-            'password'      => 'required|min:8',
-            'phone'         => 'required|numeric',
-            'age'           => 'required|numeric',
-            'gender'        => 'required',
-        ],[
-            'username.required'      => 'The User Name is required you should enter your user name',
-            'username.max'      => 'The User Name must be less than 100 characters',
-            'username.min'      => 'The User Name must be more than 4 characters',
-            'email.required'         => 'The Email is required you should enter your Email',
-            'email.email'         => 'The Field Email must be Email for example: example@example.com',
-            'email.unique'         => 'The Email has already been taken',
-            'password.required'      => 'The Password is required you should enter your Password',
-            'password.min'      => 'The User Name must be more than 8 characters',
-            'phone.required'         => 'The Phone Number is required you should enter your Phone Number',
-            'phone.numeric'         => 'The Phone Number must be number',
-            'age.required'           => 'The Age is required you should enter your Age',
-            'age.numeric'         => 'The Age must be number',
-            'gender.required'        => 'The Gender is required you must choose one of options',
-        ],[
-            'username'      => 'User Name',
-            'email'         => 'Email',
-            'password'      => 'Password',
-            'phone'         => 'Phone Number',
-            'age'           => 'Age',
-            'gender'        => 'Gender',
-        ]);
-        // $data = $this->validate(request(),[
-        //     'studentname'       => 'required',
-        //     'studentpassword'   => 'required',
-        //     'studentemail'      => 'required',
-        //     'studentphone'      => 'required',
-        //     'studentage'        => 'required',
-        //     'gender'            => 'required',
-        // ]);
-        // student::create($data);
-        student::create([
-            'studentname'     =>  $request['username'],
-            'studentpassword' =>  $request['password'],
-            'studentemail'    =>  $request['email'],
-            'studentphone'    =>  $request['phone'],
-            'studentage'      =>  $request['age'],
-            'gender'          =>  $request['gender'],
-        ]);
-        session::flash('message', 'mohamed');
-        // $add = new student;
-        // $add->studentname = request('username');
-        // $add->studentpassword = request('password');
-        // $add->studentemail = request('email');
-        // $add->studentphone = request('phone');
-        // $add->studentage = request('age');
-        // $add->gender = request('gender');
-        // $add->save();
-        return back();
+        if($request->ajax()){
+            // dd($request);
+            $data = $this->validate($request,[
+                'username'      => 'required|max:100|min:4',
+                'email'         => 'required|email|unique:students,email',
+                'password'      => 'required|min:8',
+                'phone'         => 'required|numeric',
+                'age'           => 'required|numeric',
+                'gender'        => 'required',
+            ],[
+                'username.required'      => 'The User Name is required you should enter your user name',
+                'username.max'      => 'The User Name must be less than 100 characters',
+                'username.min'      => 'The User Name must be more than 4 characters',
+                'email.required'         => 'The Email is required you should enter your Email',
+                'email.email'         => 'The Field Email must be Email for example: example@example.com',
+                'email.unique'         => 'The Email has already been taken',
+                'password.required'      => 'The Password is required you should enter your Password',
+                'password.min'      => 'The User Name must be more than 8 characters',
+                'phone.required'         => 'The Phone Number is required you should enter your Phone Number',
+                'phone.numeric'         => 'The Phone Number must be number',
+                'age.required'           => 'The Age is required you should enter your Age',
+                'age.numeric'         => 'The Age must be number',
+                'gender.required'        => 'The Gender is required you must choose one of options',
+            ],[
+                'username'      => 'User Name',
+                'email'         => 'Email',
+                'password'      => 'Password',
+                'phone'         => 'Phone Number',
+                'age'           => 'Age',
+                'gender'        => 'Gender',
+            ]);
+            // $data = $this->validate(request(),[
+            //     'studentname'       => 'required',
+            //     'studentpassword'   => 'required',
+            //     'studentemail'      => 'required',
+            //     'studentphone'      => 'required',
+            //     'studentage'        => 'required',
+            //     'gender'            => 'required',
+            // ]);
+            $addstudent = student::create($data);
+            $html = view('layouts.data', compact('addstudent'))->render();
+            return response(['status'=>true,'datastudent'=>$html]);
+            // dd($request);
+            // student::create([
+            //     'username'     =>  $request['username'],
+            //     'password' =>  $request['password'],
+            //     'email'    =>  $request['email'],
+            //     'phone'    =>  $request['phone'],
+            //     'age'      =>  $request['age'],
+            //     'gender'          =>  $request['gender'],
+            // ]);
+            session::flash('message', 'mohamed');
+            // $add = new student;
+            // $add->name = request('username');
+            // $add->password = request('password');
+            // $add->email = request('email');
+            // $add->phone = request('phone');
+            // $add->age = request('age');
+            // $add->gender = request('gender');
+            // $add->save();
+        }
+            return back();
+
         // return Redirect('students');
     }
 
