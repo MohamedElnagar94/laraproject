@@ -63,6 +63,8 @@ Route::post('students/recycle/{id?}', 'StudentController@recycle');
 Route::group(['middleware' => 'students'], function () {
 route::get('students','StudentController@store');
 });
+route::post('students/upload/singlefile','StudentController@uploadsingle');
+route::post('students/upload/multiplefile','StudentController@uploadmultiple');
 
 Auth::routes();
 

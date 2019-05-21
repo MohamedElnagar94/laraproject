@@ -282,12 +282,30 @@
                             </td>
                         </tr>
                         @endforeach
-
-
-                        
                     </tbody>
                 </table>
-                {{-- {!! $students->render() !!} --}}
+                {!! $students->render() !!}
+            </div>
+        </div>
+    </section>
+    <section class="container-fluid">
+        <div class="container">
+            <div class="row">
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger mt-2 w-100 text-center">
+                        <ul class="list-unstyled p-0">
+                            <li>{{ $error }}</li>
+                        </ul>
+                    </div>
+                @endforeach
+                {!! form::open(['url' => 'students/upload/singlefile', 'method' => 'POST' , 'files' => true]) !!}
+                {!! form::file('image', ['class' => 'form-control','multiple' => 'yes']) !!}
+                {!! form::submit('Upload Single', ['class' => 'btn btn-primary']) !!}
+                {!! form::close() !!}
+                {!! form::open(['url' => 'students/upload/multiplefile', 'method' => 'POST' , 'files' => true]) !!}
+                {!! form::file('image[]', ['class' => 'form-control','multiple' => 'yes']) !!}
+                {!! form::submit('Upload Multiple', ['class' => 'btn btn-primary']) !!}
+                {!! form::close() !!}
             </div>
         </div>
     </section>

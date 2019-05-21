@@ -187,7 +187,8 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         // $students = student::all();
-        $students = student::withTrashed()->get();
+        // $students = student::withTrashed()->get();
+        $students = student::withTrashed()->paginate(8);
         $recycle = student::onlyTrashed()->get();
         // $students = student::paginate(5);
         // $students = student::orderby('id')->get(['studentname','gender','studentphone','studentage','studentemail']);
@@ -203,9 +204,52 @@ class StudentController extends Controller
      * @param  \App\student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(student $student)
+    public function uploadsingle(Request $request)
     {
-        //
+        // dd(request()->hasFile('image'));
+        $this->validate(request(),[
+            'image' => 'required|image|mimes:jpg,jpeg,png'
+        ],[
+            'image.required' => 'The Input file is required you should upload one',
+            'image.image' => 'The File must be image',
+            'image.mimes' => 'The Image must be a file of type: jpg, jpeg ,png'
+        ],[
+
+        ]);
+        $file = request()->file('image');
+        $name = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $size = $file->getsize();
+        $mime = $file->getMimeType();
+        $realpath = $file->getRealPath();
+        $file->move(public_path('upload'),'image_'.time().'.'.$extension);
+        // dd($realpath);
+        return back();
+    }
+    public function uploadmultiple(Request $request)
+    {
+        // dd(request()->hasFile('image'));
+        $this->validate(request(),[
+            'image' => 'required',
+            'image.*' => 'required|image|mimes:jpg,jpeg,png'
+        ],[
+            'image.required' => 'The Input file is required you should upload at less one',
+            'image.image' => 'The File must be image',
+            'image.mimes' => 'The Image must be a file of type: jpg, jpeg ,png'
+        ],[
+
+        ]);
+        $files = request()->file('image');
+        foreach ($files as $file) {
+            $name = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $size = $file->getsize();
+            $mime = $file->getMimeType();
+            $realpath = $file->getRealPath();
+            $file->move(public_path('upload'),'image_'.random_int(1000,99999).'.'.$extension);
+        }
+        // dd($realpath);
+        return back();
     }
 
     /**
