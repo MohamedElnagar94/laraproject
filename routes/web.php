@@ -76,3 +76,13 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('students/login','LoginController@show');
     
 });
+
+Route::get('email/message', function () {
+    Mail::to('mohamedelnagar132@yahoo.com')->send(new \App\Mail\testmail('message from web route'));
+    return 'message from mohamed sabry';
+});
+Route::get('email/job', function () {
+    $job = (new \App\Jobs\Mailjob)->delay(\Carbon\Carbon::now()->addSeconds(5));
+    dispatch($job);
+    return 'message from mohamed sabry';
+});

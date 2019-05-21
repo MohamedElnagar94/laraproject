@@ -30,7 +30,7 @@ return [
     */
 
     'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-
+    // smtp.mailgun.org
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Port
@@ -43,7 +43,7 @@ return [
     */
 
     'port' => env('MAIL_PORT', 587),
-
+    // 587
     /*
     |--------------------------------------------------------------------------
     | Global "From" Address
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'mohamedelnagar461@yahoo.com'),
+        'name' => env('MAIL_FROM_NAME', 'Amazing Color'),
     ],
 
     /*
